@@ -17,7 +17,7 @@ int main()
 	std::cin >> SIZEY;
 	std::cout << "Укажите количество мин:";
 	std::cin >> NOFMINES;
-	while (NOFMINES > SIZEX*SIZEY)
+	while (NOFMINES >= SIZEX*SIZEY)
 	{
 		std::cout << "Слишком много мин. Укажите количество мин:";
 		std::cin >> NOFMINES;
@@ -40,30 +40,50 @@ int main()
 			mines[i][j] = false;
 		}
 	}
+	int x1, y1, choise1;
+	print_field(SIZEX, SIZEY, status, mines);
+	std::cout << "1. Сходить\n" << "2. Поставить флаг\n" << "3. Снять флаг\n";
+	std::cin >> choise1;
+	std::cout << "ВВедите координаты через пробел(x y):";
+	std::cin >> x1 >> y1;
 	srand(time(NULL));
 	for (int i = 0; i < NOFMINES; ++i)
 	{
-		int x, y;	
+		int x, y;
 		x = rand() % SIZEX;
 		y = rand() % SIZEY;
 		if (mines[x][y] == false)
-			mines[x][y] = true;
+		{
+			if ((x != x1 - 1) || (y != y1 - 1))
+				mines[x][y] = true;
+			else
+				--i;
+		}
 		else
 			--i;
 	}
-	bool stat = true;
+	bool stat = false, stat2 = false;
 	long long int begin = time(0), end;
 	while (!is_end(SIZEX, SIZEY, status, mines, NOFMINES))
 	{
 		if (stat)
 			print_field(SIZEX, SIZEY, status, mines);
 		stat = true;
-		std::cout << "1. Сходить\n" << "2. Поставить флаг\n" << "3. Снять флаг\n";
-		int choise;
-		std::cin >> choise;
-		std::cout << "ВВедите координаты через пробел(x y):";
-		int x, y;
-		std::cin >> x >> y;
+		int choise, x, y;
+		if (stat2)
+		{
+			std::cout << "1. Сходить\n" << "2. Поставить флаг\n" << "3. Снять флаг\n";
+			std::cin >> choise;
+			std::cout << "ВВедите координаты через пробел(x y):";
+			std::cin >> x >> y;
+		}
+		else
+		{
+			choise = choise1;
+			x = x1;
+			y = y1;
+		}
+		stat2 = true;
 		if (choise == 1)
 			play(x, y, status, mines, SIZEX, SIZEY, stat);
 		else if (choise == 2)
