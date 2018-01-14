@@ -40,9 +40,10 @@ int main()
 			mines[i][j] = false;
 		}
 	}
+	srand(time(NULL));
 	for (int i = 0; i < NOFMINES; ++i)
 	{
-		int x, y;
+		int x, y;	
 		x = rand() % SIZEX;
 		y = rand() % SIZEY;
 		if (mines[x][y] == false)
