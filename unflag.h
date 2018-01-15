@@ -7,6 +7,7 @@ void unflag(int x, int y, int **status, bool **mines, int SIZEX, int SIZEY, bool
 		stat = false;
 		return;
 	}
-	if (status[x - 1][y - 1] == -2)
+	switch (status[x - 1][y - 1])
+	case -2:
 		status[x - 1][y - 1] = -1;
 }

@@ -57,12 +57,18 @@ void print_field(int x, int y, int **status, bool **mines)
 		for (j = 0; j < x; ++j)
 		{
 			n = status[j][i - 1], c = 0;
-			if (n == -1)
+			switch (n)
+			{
+			case -1:
 				std::cout << '*';
-			else if (n == -2)
+				break;
+			case -2:
 				std::cout << '^';
-			else
+				break;
+			default:
 				std::cout << n;
+				break;
+			}
 			while (n > 0)
 			{
 				n /= 10;
