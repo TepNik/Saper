@@ -17,30 +17,24 @@ int main()
 	std::cin >> SIZEY;
 	std::cout << "Укажите количество мин:";
 	std::cin >> NOFMINES;
-	while (NOFMINES >= SIZEX*SIZEY)
+	while ((NOFMINES >= SIZEX*SIZEY)||(NOFMINES <= 0))
 	{
-		std::cout << "Слишком много мин. Укажите количество мин:";
+		std::cout << "Укажите нормальное количество мин:";
 		std::cin >> NOFMINES;
 	}
 	int **status = new int*[SIZEX];
-	for (int i = 0; i < SIZEX; ++i)
-	{
-		status[i] = new int[SIZEY];
-		for (int j = 0; j < SIZEY; ++j)
-		{
-			status[i][j] = -1;
-		}
-	}
 	bool **mines = new bool*[SIZEX];
 	for (int i = 0; i < SIZEX; ++i)
 	{
+		status[i] = new int[SIZEY];
 		mines[i] = new bool[SIZEY];
 		for (int j = 0; j < SIZEY; ++j)
 		{
+			status[i][j] = -1;
 			mines[i][j] = false;
 		}
 	}
-	int x1, y1, choise1;
+	int x1, y1, choise1, choise, x, y;
 	print_field(SIZEX, SIZEY, status, mines);
 	std::cout << "1. Сходить\n" << "2. Поставить флаг\n" << "3. Снять флаг\n";
 	std::cin >> choise1;
@@ -52,24 +46,18 @@ int main()
 		int x, y;
 		x = rand() % SIZEX;
 		y = rand() % SIZEY;
-		if (mines[x][y] == false)
-		{
-			if ((x != x1 - 1) || (y != y1 - 1))
-				mines[x][y] = true;
-			else
-				--i;
-		}
+		if ((mines[x][y] == false)&&((x != x1 - 1) || (y != y1 - 1)))
+			mines[x][y] = true;
 		else
 			--i;
 	}
 	bool stat = false, stat2 = false;
-	long long int begin = time(0), end;
+	long long begin = time(0), end;
 	while (!is_end(SIZEX, SIZEY, status, mines, NOFMINES))
 	{
 		if (stat)
 			print_field(SIZEX, SIZEY, status, mines);
 		stat = true;
-		int choise, x, y;
 		if (stat2)
 		{
 			std::cout << "1. Сходить\n" << "2. Поставить флаг\n" << "3. Снять флаг\n";
@@ -84,17 +72,21 @@ int main()
 			y = y1;
 		}
 		stat2 = true;
-		if (choise == 1)
-			play(x, y, status, mines, SIZEX, SIZEY, stat);
-		else if (choise == 2)
-			flag(x, y, status, mines, SIZEX, SIZEY, stat, NOFFLAGS, NOFMINES);
-		else if (choise == 3)
-			unflag(x, y, status, mines, SIZEX, SIZEY, stat);
-		else
+		switch (choise)
 		{
+		case 1:
+			play(x, y, status, mines, SIZEX, SIZEY, stat);
+			break;
+		case 2:
+			flag(x, y, status, mines, SIZEX, SIZEY, stat, NOFFLAGS, NOFMINES);
+			break;
+		case 3:
+			unflag(x, y, status, mines, SIZEX, SIZEY, stat);
+			break;
+		default:
 			stat = false;
 			std::cout << "Выберите один из вариантов:\n";
-			continue;
+			break;
 		}
 	}
 	std::cout << "Вы выйграли!\n";
