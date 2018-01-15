@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <ctime>
 #include <cstdlib>
 #include "print_field.h"
@@ -99,7 +100,80 @@ int main()
 	}
 	std::cout << "Вы выйграли!\n";
 	end = time(0);
-	std::cout << "Время:" << end - begin << " секунд.\n";
+	int result_time = end - begin, n = -1, i, ind = 0, square = SIZEX * SIZEY;
+	std::cout << "Время:" << result_time << " секунд.\n";
+	std::ofstream fout;
+	std::ifstream fin;
+	fin.open("results.log", std::fstream::in);
+	if (!fin.good())
+	{
+		fout.open("results.log", std::fstream::out);
+		fout.close();
+		fin.open("results.log", std::fstream::in);
+	}
+	if (!fin)
+	{
+		std::cout << "File not opened\n";
+		system("pause");
+		exit(0);
+	}
+	fin >> n;
+	if (n == -1)
+	{
+		std::cout << "Новый рекорд прохождения на этой площади.\n";
+		fout.open("results.log", std::fstream::out);
+		if (!fout)
+		{
+			std::cout << "File not opened out 01\n";
+			exit(0);
+		}
+		fout << 1 << '\n' << SIZEX << ' ' << SIZEY << ' ' << result_time << '\n';
+		system("pause");
+		return 0;
+	}
+	int **m = new int*[n];
+	bool stat3 = false;
+	for (i = 0; i < n; ++i)
+	{
+		m[i] = new int[3];
+		fin >> m[i][0] >> m[i][1] >> m[i][2];
+		if (square > m[i][0] * m[i][1])
+			++ind;
+		if (square == m[i][0] * m[i][1])
+		{
+			stat3 = true;
+			ind = i;
+		}
+	}
+	fout.open("results.log", std::fstream::out);
+	if (!fout)
+	{
+		std::cout << "File not opened out\n";
+		exit(0);
+	}
+	fout << (stat3 ? n : n + 1) << '\n';
+	for (i = 0; i < ind; ++i)
+		fout << m[i][0] << ' ' << m[i][1] << ' ' << m[i][2] << '\n';
+	if (stat3)
+	{
+		if (result_time < m[ind][2])
+		{
+			fout << SIZEX << ' ' << SIZEY << ' ' << result_time << '\n';
+			std::cout << "Новый рекорд прохождения на этой площади.\n";
+		}
+		else
+		{
+			fout << SIZEX << ' ' << SIZEY << ' ' << m[ind][2] << '\n';
+			std::cout << "Рекорд на этой площади:" << m[ind][2] << " секунды.\n";
+		}
+	}
+	else
+	{
+		fout << SIZEX << ' ' << SIZEY << ' ' << result_time << '\n';
+		std::cout << "Новый рекорд прохождения на этой площади.\n";
+	}
+	for (i = (stat3 ? ind + 1 : ind); i < n; ++i)
+		fout << m[i][0] << ' ' << m[i][1] << ' ' << m[i][2] << '\n';
 	system("pause");
 	return 0;
 }
