@@ -120,14 +120,14 @@ int main()
 	fin >> n;
 	if (n == -1)
 	{
-		std::cout << "Ќовый рекорд прохождени€ на этой площади.\n";
+		std::cout << "Ќовый рекорд прохождени€ на этой площади и с этим количествоим мин.\n";
 		fout.open("results.log", std::fstream::out);
 		if (!fout)
 		{
 			std::cout << "File not opened out 01\n";
 			exit(0);
 		}
-		fout << 1 << '\n' << SIZEX << ' ' << SIZEY << ' ' << result_time << '\n';
+		fout << 1 << '\n' << square << ' ' << NOFMINES << ' ' << result_time << '\n';
 		system("pause");
 		return 0;
 	}
@@ -137,13 +137,19 @@ int main()
 	{
 		m[i] = new int[3];
 		fin >> m[i][0] >> m[i][1] >> m[i][2];
-		if (square > m[i][0] * m[i][1])
-			++ind;
-		if (square == m[i][0] * m[i][1])
+	}
+	for (i = 0; i < n; ++i)
+	{
+		if ((square == m[i][0]) && (!stat3))
 		{
-			stat3 = true;
 			ind = i;
+			while ((ind < n) && (square == m[ind][0]) && (NOFMINES > m[ind][1]))
+				++ind;
+			if ((ind < n) && (NOFMINES == m[ind][1]))
+				stat3 = true;
 		}
+		else
+			++ind;
 	}
 	fout.open("results.log", std::fstream::out);
 	if (!fout)
@@ -158,19 +164,19 @@ int main()
 	{
 		if (result_time < m[ind][2])
 		{
-			fout << SIZEX << ' ' << SIZEY << ' ' << result_time << '\n';
-			std::cout << "Ќовый рекорд прохождени€ на этой площади.\n";
+			fout << square << ' ' << NOFMINES << ' ' << result_time << '\n';
+			std::cout << "Ќовый рекорд прохождени€ на этой площади и с этим количествоим мин.\n";
 		}
 		else
 		{
-			fout << SIZEX << ' ' << SIZEY << ' ' << m[ind][2] << '\n';
-			std::cout << "–екорд на этой площади:" << m[ind][2] << " секунды.\n";
+			fout << square << ' ' << NOFMINES << ' ' << m[ind][2] << '\n';
+			std::cout << "–екорд на этой площади и с этим количествоим мин:" << m[ind][2] << " секунды.\n";
 		}
 	}
 	else
 	{
-		fout << SIZEX << ' ' << SIZEY << ' ' << result_time << '\n';
-		std::cout << "Ќовый рекорд прохождени€ на этой площади.\n";
+		fout << square << ' ' << NOFMINES << ' ' << result_time << '\n';
+		std::cout << "Ќовый рекорд прохождени€ на этой площади и с этим количествоим мин.\n";
 	}
 	for (i = (stat3 ? ind + 1 : ind); i < n; ++i)
 		fout << m[i][0] << ' ' << m[i][1] << ' ' << m[i][2] << '\n';
