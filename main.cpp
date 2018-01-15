@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <ctime>
 #include <cstdlib>
 #include "print_field.h"
@@ -91,7 +92,86 @@ int main()
 	}
 	std::cout << "¬ы выйграли!\n";
 	end = time(0);
-	std::cout << "¬рем€:" << end - begin << " секунд.\n";
+	int result_time = end - begin, n = -1, i, ind = 0, square = SIZEX * SIZEY;
+	std::cout << "¬рем€:" << result_time << " секунд.\n";
+	std::ofstream fout;
+	std::ifstream fin;
+	fin.open("results.log", std::fstream::in);
+	if (!fin.good())
+	{
+		fout.open("results.log", std::fstream::out);
+		fout.close();
+		fin.open("results.log", std::fstream::in);
+	}
+	if (!fin)
+	{
+		std::cout << "File not opened\n";
+		system("pause");
+		exit(0);
+	}
+	fin >> n;
+	if (n == -1)
+	{
+		std::cout << "Ќовый рекорд прохождени€ на этой площади и с этим количествоим мин.\n";
+		fout.open("results.log", std::fstream::out);
+		if (!fout)
+		{
+			std::cout << "File not opened out 01\n";
+			exit(0);
+		}
+		fout << 1 << '\n' << square << ' ' << NOFMINES << ' ' << result_time << '\n';
+		system("pause");
+		return 0;
+	}
+	int **m = new int*[n];
+	bool stat3 = false;
+	for (i = 0; i < n; ++i)
+	{
+		m[i] = new int[3];
+		fin >> m[i][0] >> m[i][1] >> m[i][2];
+	}
+	for (i = 0; i < n; ++i)
+	{
+		if ((square == m[i][0]) && (!stat3))
+		{
+			ind = i;
+			while ((ind < n) && (square == m[ind][0]) && (NOFMINES > m[ind][1]))
+				++ind;
+			if ((ind < n) && (NOFMINES == m[ind][1]))
+				stat3 = true;
+		}
+		else if (square > m[i][0])
+			++ind;
+	}
+	fout.open("results.log", std::fstream::out);
+	if (!fout)
+	{
+		std::cout << "File not opened out\n";
+		exit(0);
+	}
+	fout << (stat3 ? n : n + 1) << '\n';
+	for (i = 0; i < ind; ++i)
+		fout << m[i][0] << ' ' << m[i][1] << ' ' << m[i][2] << '\n';
+	if (stat3)
+	{
+		if (result_time < m[ind][2])
+		{
+			fout << square << ' ' << NOFMINES << ' ' << result_time << '\n';
+			std::cout << "Ќовый рекорд прохождени€ на этой площади и с этим количествоим мин.\n";
+		}
+		else
+		{
+			fout << square << ' ' << NOFMINES << ' ' << m[ind][2] << '\n';
+			std::cout << "–екорд на этой площади и с этим количествоим мин:" << m[ind][2] << " секунды.\n";
+		}
+	}
+	else
+	{
+		fout << square << ' ' << NOFMINES << ' ' << result_time << '\n';
+		std::cout << "Ќовый рекорд прохождени€ на этой площади и с этим количествоим мин.\n";
+	}
+	for (i = (stat3 ? ind + 1 : ind); i < n; ++i)
+		fout << m[i][0] << ' ' << m[i][1] << ' ' << m[i][2] << '\n';
 	system("pause");
 	return 0;
 }
