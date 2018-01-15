@@ -140,7 +140,7 @@ int main()
 			if ((ind < n) && (NOFMINES == m[ind][1]))
 				stat3 = true;
 		}
-		else
+		else if (square > m[i][0])
 			++ind;
 	}
 	fout.open("results.log", std::fstream::out);
