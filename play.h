@@ -1,15 +1,16 @@
 #pragma once
+#include "language.h"
 void play(int x, int y, int **status, bool **mines, int SIZEX, int SIZEY, bool &stat)
 {
 	if ((x <= 0) || (y <= 0) || (x > SIZEX) || (y > SIZEY))
 	{
-		std::cout << "Наберите нормальные координаты.\n";
+		std::cout << phrases[15];
 		stat = false;
 		return;
 	}
 	if (mines[x - 1][y - 1] == true)
 	{
-		std::cout << "Вы проиграли!\n";
+		std::cout << phrases[16];
 		system("pause");
 		exit(0);
 	}

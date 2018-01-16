@@ -1,5 +1,6 @@
 #pragma once
-void seteng(char **phrases)
+char **phrases = new char*[19];
+void seteng()
 {
 	phrases[0] = "Saper\n";
 	phrases[1] = "Set size x:";
@@ -16,9 +17,13 @@ void seteng(char **phrases)
 	phrases[12] = " sec.\n";
 	phrases[13] = "New best record in playing on this square and with this number of mines.\n";
 	phrases[14] = "Best record on this square and with this number of mines:";
+	phrases[15] = "Set normal coordinates.\n";
+	phrases[16] = "You have lose.\n";
+	phrases[17] = "On the field there are already masimum number of flags.\n";
+	phrases[18] = "This dot is already opened.\n";
 }
 
-void setrus(char **phrases)
+void setrus()
 {
 	phrases[0] = "Сапер\n";
 	phrases[1] = "Укажите размер x:";
@@ -35,4 +40,8 @@ void setrus(char **phrases)
 	phrases[12] = " сек.\n";
 	phrases[13] = "Новый рекорд прохождения на этой площади и с этим количествоим мин.\n";
 	phrases[14] = "Рекорд на этой площади и с этим количествоим мин:";
+	phrases[15] = "Введите нормальные координаты.\n";
+	phrases[16] = "Вы проиграли.\n";
+	phrases[17] = "На карте уже стоит максимальное количество флагов.\n";
+	phrases[18] = "Эта точка уже открыта.\n";
 }

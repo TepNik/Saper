@@ -2,18 +2,17 @@
 #include <fstream>
 #include <ctime>
 #include <cstdlib>
+#include "language.h"
 #include "print_field.h"
 #include "flag.h"
 #include "is_end.h"
 #include "play.h"
 #include "unflag.h"
-#include "language.h"
 
 int main()
 {
 	int SIZEX, SIZEY, NOFMINES, NOFFLAGS = 0, language;
 	bool statlang = false;
-	char **phrases = new char*[15];
 	setlocale(LC_ALL, "Russian");
 	while (!statlang)
 	{
@@ -24,7 +23,7 @@ int main()
 			std::cout << "Write 1 or 2";
 			continue;
 		}
-		(language == 1 ? seteng(phrases) : setrus(phrases));
+		(language == 1 ? seteng() : setrus());
 		statlang = true;
 	}
 	std::cout << phrases[0] << phrases[1];
@@ -51,11 +50,19 @@ int main()
 		}
 	}
 	int x1, y1, choise1, choise, x, y;
+	bool stat = false;
 	print_field(SIZEX, SIZEY, status, mines);
-	std::cout << phrases[5] << phrases[6] << phrases[7];
-	std::cin >> choise1;
-	std::cout << phrases[8];
-	std::cin >> x1 >> y1;
+	while (!stat)
+	{
+		std::cout << phrases[5] << phrases[6] << phrases[7];
+		std::cin >> choise1;
+		std::cout << phrases[8];
+		std::cin >> x1 >> y1;
+		if ((x <= 0) || (y <= 0) || (x > SIZEX) || (y > SIZEY))
+			std::cout << phrases[15];
+		else
+			stat = true;
+	}
 	srand(time(NULL));
 	for (int i = 0; i < NOFMINES; ++i)
 	{
@@ -67,7 +74,8 @@ int main()
 		else
 			--i;
 	}
-	bool stat = false, stat2 = false;
+	stat = false
+	bool stat2 = false;
 	long long begin = time(0), end;
 	while (!is_end(SIZEX, SIZEY, status, mines, NOFMINES))
 	{
@@ -131,7 +139,7 @@ int main()
 		fout.open("results.log", std::fstream::out);
 		if (!fout)
 		{
-			std::cout << "File not opened out 01\n";
+			std::cout << "File not opened out\n";
 			exit(0);
 		}
 		fout << 1 << '\n' << square << ' ' << NOFMINES << ' ' << result_time << '\n';
