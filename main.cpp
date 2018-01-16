@@ -7,20 +7,35 @@
 #include "is_end.h"
 #include "play.h"
 #include "unflag.h"
+#include "language.h"
 
 int main()
 {
-	int SIZEX, SIZEY, NOFMINES, NOFFLAGS = 0;
+	int SIZEX, SIZEY, NOFMINES, NOFFLAGS = 0, language;
+	bool statlang = false;
+	char **phrases = new char*[15];
 	setlocale(LC_ALL, "Russian");
-	std::cout << "Сапер\n" << "Укажите размер x:";
+	while (!statlang)
+	{
+		std::cout << "Set lenguage:\n" << "1. English\n2. Русский\n";
+		std::cin >> language;
+		if ((language < 1) || (language > 2))
+		{
+			std::cout << "Write 1 or 2";
+			continue;
+		}
+		(language == 1 ? seteng(phrases) : setrus(phrases));
+		statlang = true;
+	}
+	std::cout << phrases[0] << phrases[1];
 	std::cin >> SIZEX;
-	std::cout << "Укажите размер y:";
+	std::cout << phrases[2];
 	std::cin >> SIZEY;
-	std::cout << "Укажите количество мин:";
+	std::cout << phrases[3];
 	std::cin >> NOFMINES;
 	while ((NOFMINES >= SIZEX*SIZEY)||(NOFMINES <= 0))
 	{
-		std::cout << "Укажите нормальное количество мин:";
+		std::cout << phrases[4];
 		std::cin >> NOFMINES;
 	}
 	int **status = new int*[SIZEX];
@@ -37,9 +52,9 @@ int main()
 	}
 	int x1, y1, choise1, choise, x, y;
 	print_field(SIZEX, SIZEY, status, mines);
-	std::cout << "1. Сходить\n" << "2. Поставить флаг\n" << "3. Снять флаг\n";
+	std::cout << phrases[5] << phrases[6] << phrases[7];
 	std::cin >> choise1;
-	std::cout << "ВВедите координаты через пробел(x y):";
+	std::cout << phrases[8];
 	std::cin >> x1 >> y1;
 	srand(time(NULL));
 	for (int i = 0; i < NOFMINES; ++i)
@@ -61,9 +76,9 @@ int main()
 		stat = true;
 		if (stat2)
 		{
-			std::cout << "1. Сходить\n" << "2. Поставить флаг\n" << "3. Снять флаг\n";
+			std::cout << phrases[5] << phrases[6] << phrases[7];
 			std::cin >> choise;
-			std::cout << "ВВедите координаты через пробел(x y):";
+			std::cout << phrases[8];
 			std::cin >> x >> y;
 		}
 		else
@@ -86,14 +101,14 @@ int main()
 			break;
 		default:
 			stat = false;
-			std::cout << "Выберите один из вариантов:\n";
+			std::cout << phrases[9];
 			break;
 		}
 	}
-	std::cout << "Вы выйграли!\n";
+	std::cout << phrases[10];
 	end = time(0);
 	int result_time = end - begin, n = -1, i, ind = 0, square = SIZEX * SIZEY;
-	std::cout << "Время:" << result_time << " секунд.\n";
+	std::cout << phrases[11] << result_time << phrases[12];
 	std::ofstream fout;
 	std::ifstream fin;
 	fin.open("results.log", std::fstream::in);
@@ -112,7 +127,7 @@ int main()
 	fin >> n;
 	if (n == -1)
 	{
-		std::cout << "Новый рекорд прохождения на этой площади и с этим количествоим мин.\n";
+		std::cout << phrases[13];
 		fout.open("results.log", std::fstream::out);
 		if (!fout)
 		{
@@ -157,18 +172,18 @@ int main()
 		if (result_time < m[ind][2])
 		{
 			fout << square << ' ' << NOFMINES << ' ' << result_time << '\n';
-			std::cout << "Новый рекорд прохождения на этой площади и с этим количествоим мин.\n";
+			std::cout << phrases[13];
 		}
 		else
 		{
 			fout << square << ' ' << NOFMINES << ' ' << m[ind][2] << '\n';
-			std::cout << "Рекорд на этой площади и с этим количествоим мин:" << m[ind][2] << " секунды.\n";
+			std::cout << phrases[14] << m[ind][2] << phrases[12];
 		}
 	}
 	else
 	{
 		fout << square << ' ' << NOFMINES << ' ' << result_time << '\n';
-		std::cout << "Новый рекорд прохождения на этой площади и с этим количествоим мин.\n";
+		std::cout << phrases[13];
 	}
 	for (i = (stat3 ? ind + 1 : ind); i < n; ++i)
 		fout << m[i][0] << ' ' << m[i][1] << ' ' << m[i][2] << '\n';
