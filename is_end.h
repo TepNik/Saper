@@ -1,5 +1,5 @@
 #pragma once
-bool is_end(int SIZEX, int SIZEY, int **status, bool **mines, int NOFMINES)
+bool is_end(int SIZEX, int SIZEY, int **status, bool **mines, int NOFMINES)//checking if all mines and flags at the sape coordinates
 {
 	for (int i = 0; i < SIZEX; ++i)
 		for (int j = 0; j < SIZEY; ++j)

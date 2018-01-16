@@ -3,17 +3,19 @@
 void print_field(int x, int y, int **status, bool **mines)
 {
 	int i, n = x, countx = 0, county = 0;
-	while (n > 0)
+	while (n > 0)//count number of numerals in x
 	{
 		n /= 10;
 		++countx;
 	}
 	n = y;
-	while (n > 0)
+	while (n > 0)//count number of numerals in y
 	{
 		n /= 10;
 		++county;
 	}
+	//below we print field in console
+	//here we print top
 	for (i = 0; i < county; ++i)
 		std::cout << ' ';
 	std::cout << '|';
@@ -41,6 +43,7 @@ void print_field(int x, int y, int **status, bool **mines)
 		for (int i = countx; i < (countx + 1) * x; ++i)
 			std::cout << '-';
 	std::cout << '\n';
+	//here we print left
 	for (i = 1; i <= y; ++i)
 	{
 		n = i;

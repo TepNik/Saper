@@ -8,7 +8,7 @@ void flag(int x, int y, int **status, bool **mines, int SIZEX, int SIZEY, bool &
 		stat = false;
 		return;
 	}
-	if (NOFFLAGS == NOFMINES)
+	if (NOFFLAGS == NOFMINES) //we can't put flags more than number of mines
 	{
 		std::cout << phrases[17];
 		stat = false;

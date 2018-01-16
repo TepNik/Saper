@@ -14,7 +14,8 @@ void play(int x, int y, int **status, bool **mines, int SIZEX, int SIZEY, bool &
 		system("pause");
 		exit(0);
 	}
-	int count = 0;
+	int count = 0;//count all mines around
+	//below we check if there are mines around
 	if ((x > 1) && (y > 1) && (mines[x - 2][y - 2]))
 		++count;
 
@@ -39,8 +40,8 @@ void play(int x, int y, int **status, bool **mines, int SIZEX, int SIZEY, bool &
 	if ((x < SIZEX) && (y < SIZEY) && (mines[x][y]))
 		++count;
 
-	status[x - 1][y - 1] = count;
-
+	status[x - 1][y - 1] = count;//in status we put number of mines around
+	//below we call this function on neighboring dots if they aren't mines
 	if ((x > 1) && (y > 1) && (!mines[x - 2][y - 2]) && (status[x - 2][y - 2] == -1))
 		play(x - 1, y - 1, status, mines, SIZEX, SIZEY, stat);
 
