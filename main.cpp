@@ -58,7 +58,7 @@ int main()
 		std::cin >> choise1;
 		std::cout << phrases[8];
 		std::cin >> x1 >> y1;
-		if ((x <= 0) || (y <= 0) || (x > SIZEX) || (y > SIZEY))
+		if ((x1 <= 0) || (y1 <= 0) || (x1 > SIZEX) || (y1 > SIZEY))
 			std::cout << phrases[15];
 		else
 			stat = true;
@@ -74,7 +74,7 @@ int main()
 		else
 			--i;
 	}
-	stat = false
+	stat = false;
 	bool stat2 = false;
 	long long begin = time(0), end;
 	while (!is_end(SIZEX, SIZEY, status, mines, NOFMINES))
